@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Information Management</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: black;
+            color: white;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            text-align: center;
+            padding: 20px;
+            background-color: #333;
+        }
+        header h1 {
+            margin: 0;
+        }
+        section {
+            margin: 20px auto;
+            max-width: 800px;
+        }
+        .week {
+            margin-bottom: 20px;
+        }
+        .week h2 {
+            border-bottom: 2px solid #555;
+            padding-bottom: 5px;
+        }
+        .upload-form {
+            margin-bottom: 10px;
+        }
+        .upload-form input[type="file"] {
+            margin-bottom: 10px;
+        }
+        .file-list {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        .file-list li {
+            margin-bottom: 5px;
+        }
+        footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #333;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Information Management</h1>
+        <p>Yuldoshev Behruz | IBM Department | ID Number: 2417724</p>
+    </header>
+
+    <section id="assignments">
+        <h2>Assignments by Week</h2>
+        
+        <!-- Generate weeks dynamically -->
+        <script>
+            const assignmentsSection = document.getElementById('assignments');
+            
+            for (let i = 1; i <= 16; i++) {
+                const weekDiv = document.createElement('div');
+                weekDiv.className = 'week';
+                weekDiv.innerHTML = `
+                    <h2>Week ${i}</h2>
+                    <form class="upload-form" id="uploadFormWeek${i}" enctype="multipart/form-data">
+                        <input type="file" id="fileInputWeek${i}" accept=".html,.csv,.pdf,.pptx,.txt,.docx,.xlsx" />
+                        <button type="button" onclick="uploadFile(${i})">Upload</button>
+                    </form>
+                    <ul class="file-list" id="fileListWeek${i}">
+                        <!-- Uploaded files will appear here -->
+                    </ul>
+                `;
+                assignmentsSection.appendChild(weekDiv);
+            }
+
+            function uploadFile(weekNumber) {
+                const fileInput = document.getElementById(`fileInputWeek${weekNumber}`);
+                const fileList = document.getElementById(`fileListWeek${weekNumber}`);
+                
+                if (fileInput.files.length > 0) {
+                    const file = fileInput.files[0];
+                    const listItem = document.createElement('li');
+                    
+                    if (['application/pdf', 'text/html', 'text/csv', 'application/vnd.openxmlformats-officedocument.presentationml.presentation'].includes(file.type)) {
+                        listItem.innerHTML = `<a href="#" onclick="viewFile('${URL.createObjectURL(file)}')">${file.name}</a>`;
+                    } else {
+                        listItem.textContent = `Unsupported file type (${file.name})`;
+                    }
+                    
+                    fileList.appendChild(listItem);
+                } else {
+                    alert("Please select a file to upload.");
+                }
+                
+                fileInput.value = ""; // Reset the input for new uploads
+            }
+
+            function viewFile(fileUrl) {
+                window.open(fileUrl, '_blank');
+            }
+        </script>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 Yuldoshev Behruz | Information Management</p>
+    </footer>
+</body>
+</html>
